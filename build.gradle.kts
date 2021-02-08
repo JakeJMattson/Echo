@@ -18,9 +18,7 @@ repositories {
 
 dependencies {
     implementation("me.jakejmattson:DiscordKt:0.22.0-SNAPSHOT")
-    //implementation("dev.schlaubi.lavakord", "kord", "1.0.0-SNAPSHOT")
-    implementation("dev.schlaubi.lavakord", "core-jvm", "1.0.0-20210211.162050-2")
-    implementation("dev.schlaubi.lavakord", "kord-jvm", "1.0.0-20210211.162050-2")
+    implementation("dev.schlaubi.lavakord", "kord", "1.0.0-SNAPSHOT")
 }
 
 tasks {
