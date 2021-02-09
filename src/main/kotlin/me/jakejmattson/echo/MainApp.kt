@@ -3,9 +3,15 @@ package me.jakejmattson.echo
 import dev.kord.common.annotation.KordPreview
 import dev.kord.common.entity.Snowflake
 import dev.kord.common.kColor
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import me.jakejmattson.discordkt.api.dsl.bot
 import me.jakejmattson.discordkt.api.extensions.addInlineField
 import me.jakejmattson.discordkt.api.extensions.profileLink
+import me.jakejmattson.echo.services.AudioService
+import java.io.*
+import java.util.*
+
 
 @KordPreview
 fun main(args: Array<String>) {
@@ -42,6 +48,20 @@ fun main(args: Array<String>) {
             footer {
                 val versions = it.discord.versions
                 text = "1.0.0 - ${versions.library} - ${versions.kord}"
+            }
+        }
+
+        onStart {
+            val lavalinkServer = File("server/Lavalink.jar")
+            val command = "java -jar \"${lavalinkServer.absolutePath}\""
+            val proc = Runtime.getRuntime().exec(command)
+            val stdInput = Scanner(proc.inputStream)
+
+            GlobalScope.launch {
+                while (stdInput.hasNext()) {
+                    val line = stdInput.nextLine()
+                    println(line)
+                }
             }
         }
     }
