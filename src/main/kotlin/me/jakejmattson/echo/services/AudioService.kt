@@ -40,6 +40,11 @@ class AudioService(discord: Discord) {
         }
     }
 
+    suspend fun pause(member: Member) {
+        val link = connect(member) ?: return
+        link.player.pause()
+    }
+
     private suspend fun connect(member: Member): Link? {
         val player = member.getPlayer()
         val state = member.getVoiceStateOrNull()

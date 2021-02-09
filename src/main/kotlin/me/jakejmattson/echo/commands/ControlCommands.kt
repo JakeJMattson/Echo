@@ -15,7 +15,7 @@ fun control(player: AudioService) = commands("Control") {
     guildCommand("Pause") {
         description = "Pause the currently playing song"
         execute {
-
+            player.pause(getMember()!!)
         }
     }
 
