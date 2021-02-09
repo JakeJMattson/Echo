@@ -12,12 +12,15 @@ repositories {
     mavenCentral()
     jcenter()
     maven("https://jitpack.io")
+    maven("https://schlaubi.jfrog.io/artifactory/lavakord")
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
     implementation("me.jakejmattson:DiscordKt:0.22.0-SNAPSHOT")
-    implementation("me.schlaubi:lavakord:0.3")
+    //implementation("dev.schlaubi.lavakord", "kord", "1.0.0-SNAPSHOT")
+    implementation("dev.schlaubi.lavakord", "core-jvm", "1.0.0-20210211.162050-2")
+    implementation("dev.schlaubi.lavakord", "kord-jvm", "1.0.0-20210211.162050-2")
 }
 
 tasks {
