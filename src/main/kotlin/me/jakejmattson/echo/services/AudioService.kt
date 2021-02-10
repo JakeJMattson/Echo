@@ -1,5 +1,6 @@
 package me.jakejmattson.echo.services
 
+import dev.kord.common.entity.Snowflake
 import dev.kord.core.entity.Member
 import dev.kord.core.entity.channel.VoiceChannel
 import dev.kord.x.lavalink.audio.Link
@@ -11,10 +12,12 @@ import dev.kord.x.lavalink.rest.loadItem
 import kotlinx.coroutines.flow.firstOrNull
 import me.jakejmattson.discordkt.api.Discord
 import me.jakejmattson.discordkt.api.annotations.Service
+import me.jakejmattson.echo.data.Song
 
 @Service
 class AudioService(discord: Discord) {
     private val lavaKord = discord.kord.lavakord()
+    val songMap = mapOf<Snowflake, MutableList<Song>>()
 
     init {
         lavaKord.addNode("ws://127.0.0.1:2333/", "password")
