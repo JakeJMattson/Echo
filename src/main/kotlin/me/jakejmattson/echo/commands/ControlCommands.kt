@@ -22,7 +22,7 @@ fun control(player: AudioService) = commands("Control") {
     guildCommand("Skip", "Next") {
         description = "Skip the currently playing song"
         execute {
-
+            player.stop(getMember()!!)
         }
     }
 
