@@ -2,12 +2,13 @@ package me.jakejmattson.echo.commands
 
 import me.jakejmattson.discordkt.api.arguments.EveryArg
 import me.jakejmattson.discordkt.api.dsl.commands
+import me.jakejmattson.echo.services.AudioService
 
-fun control() = commands("Control") {
+fun control(player: AudioService) = commands("Control") {
     guildCommand("Play") {
         description = "Play a song"
         execute(EveryArg) {
-
+            player.play(getMember()!!, args.first)
         }
     }
 
