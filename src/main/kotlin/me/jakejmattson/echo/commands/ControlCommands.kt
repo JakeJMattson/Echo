@@ -29,7 +29,8 @@ fun control(player: AudioService) = commands("Control") {
     guildCommand("List") {
         description = "List all queued songs"
         execute {
-
+            val songList = player.listSongs(guild)
+            respond(songList)
         }
     }
 }

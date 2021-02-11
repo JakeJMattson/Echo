@@ -1,6 +1,7 @@
 package me.jakejmattson.echo.services
 
 import dev.kord.common.entity.Snowflake
+import dev.kord.core.entity.Guild
 import dev.kord.core.entity.Member
 import dev.kord.core.entity.channel.VoiceChannel
 import dev.kord.x.lavalink.audio.Link
@@ -51,6 +52,8 @@ class AudioService(discord: Discord) {
         val link = connect(member) ?: return
         link.player.stopTrack()
     }
+
+    fun listSongs(guild: Guild) = songMap[guild.id]?.joinToString { it.track.title } ?: ""
 
     private suspend fun connect(member: Member): Link? {
         val player = member.getPlayer()
