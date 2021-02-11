@@ -13,11 +13,12 @@ import kotlinx.coroutines.flow.firstOrNull
 import me.jakejmattson.discordkt.api.Discord
 import me.jakejmattson.discordkt.api.annotations.Service
 import me.jakejmattson.echo.data.Song
+import me.jakejmattson.echo.data.by
 
 @Service
 class AudioService(discord: Discord) {
     private val lavaKord = discord.kord.lavakord()
-    val songMap = mapOf<Snowflake, MutableList<Song>>()
+    private val songMap = mapOf<Snowflake, MutableList<Song>>()
 
     init {
         lavaKord.addNode("ws://127.0.0.1:2333/", "password")
@@ -27,20 +28,18 @@ class AudioService(discord: Discord) {
         println("Playing $query from ${member.displayName}")
 
         val link = connect(member) ?: return
-        val player = link.player
         val search = if (query.startsWith("http")) query else "ytsearch:$query"
         val response = link.loadItem(search)
-        val track = response.track
 
-        println(track.info)
+        val songs = when (response.loadType) {
+            TrackResponse.LoadType.TRACK_LOADED -> listOf(response.track.toTrack() by member.id)
+            TrackResponse.LoadType.SEARCH_RESULT -> listOf(response.track.toTrack() by member.id)
+            TrackResponse.LoadType.PLAYLIST_LOADED -> response.tracks.map { it.toTrack() by member.id }
+            TrackResponse.LoadType.NO_MATCHES -> null
+            TrackResponse.LoadType.LOAD_FAILED -> null
+        } ?: return
 
-        when (response.loadType) {
-            TrackResponse.LoadType.TRACK_LOADED -> player.playTrack(track)
-            TrackResponse.LoadType.PLAYLIST_LOADED -> player.playTrack(track)
-            TrackResponse.LoadType.SEARCH_RESULT -> player.playTrack(track)
-            TrackResponse.LoadType.NO_MATCHES -> println("No matches")
-            TrackResponse.LoadType.LOAD_FAILED -> println(response.exception?.message ?: "Error")
-        }
+        songMap[member.guildId]?.addAll(songs)
     }
 
     suspend fun pause(member: Member) {
